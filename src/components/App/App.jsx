@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import Modal from 'react-modal';
 import './style.scss';
 import Header from '../Header/Header';
 import Tabs from '../Tabs/Tabs';
@@ -10,10 +11,20 @@ class App extends Component {
 
     this.state = {
       items: null,
+      showModal: false,
     };
   }
 
   componentDidMount() {
+    this.getThumbs(true);
+    this.countdown = setInterval(this.getThumbs, 10000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.countdown);
+  }
+
+  getThumbs = (isInitial = false) => {
     fetch('http://localhost:8000/api.php', {
       // mode: 'no-cors',
       method: 'GET',
@@ -28,14 +39,19 @@ class App extends Component {
             (rv[x.folder_parent_name] = rv[x.folder_parent_name] || []).push(x); // eslint-disable-line
             return rv;
           }, {});
-          console.log(groupedItems);
+          const { activeTab } = this.state;
           this.setState({
             items: groupedItems,
-            activeTab: 0,
+            activeTab: isInitial ? 0 : activeTab,
           });
         });
       }
     });
+  }
+
+  handleCloseModal = () => {
+    this.countdown = setInterval(this.getThumbs, 10000);
+    this.setState({ showModal: false });
   }
 
   select = (e, idx) => {
@@ -46,8 +62,10 @@ class App extends Component {
   }
 
   openFull = (src) => {
+    clearInterval(this.countdown);
     this.setState({
       fullImage: src,
+      showModal: true,
     });
   }
 
@@ -56,17 +74,39 @@ class App extends Component {
   }
 
   render() {
-    const { items, activeTab, fullImage } = this.state;
-    console.log(items);
+    const {
+      items, activeTab, fullImage, showModal,
+    } = this.state;
     return items !== null ? (
       <div>
         <div className="app-container">
           <div className="content">
+            <Modal
+              isOpen={showModal}
+              onRequestClose={this.handleCloseModal}
+              contentLabel="Видео с камеры"
+              style={{
+                overlay: {
+                  backgroundColor: '#000000ba',
+                  zIndex: 9,
+                },
+                content: {
+                  padding: '0',
+                  overflow: 'hidden',
+                },
+              }}
+            >
+              {/* eslint-disable-next-line */}
+              <img
+                onClick={this.handleCloseModal}
+                className="close"
+                src="/images/clear.svg"
+                alt="закрыть"
+              />
+              {fullImage && <iframe title="full" src={fullImage} />}
+            </Modal>
             <Header />
             <main className="wrapper">
-              <div className="full-container">
-                {fullImage && <iframe title="full" src={fullImage} />}
-              </div>
               <Tabs tabs={Object.keys(items)} activeTab={activeTab} select={this.select} />
               <div className="thumbs">
                 {/* eslint-disable-next-line */}

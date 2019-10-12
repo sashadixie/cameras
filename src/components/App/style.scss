@@ -1,5 +1,18 @@
 @import "../shared/globals";
 
+iframe {
+  height: 100%;
+  width: 100%;
+}
+
+.close {
+  position: absolute;
+  right: 0;
+  width: 50px;
+  filter: invert(100);
+  cursor: pointer;
+}
+
 .app-container {
   display: flex;
 
@@ -7,15 +20,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-
-    iframe {
-      height: 50vh;
-      width: 100%;
-
-      #flussonic-player {
-        background: white;
-      }
-    }
   }
 
   .thumbs {
@@ -29,7 +33,6 @@
       height: auto;
       margin: 20px;
       border-radius: 2px;
-      padding: 8px;
       margin-bottom: 8px;
       transition: background-color .2s ease;
 
@@ -40,7 +43,7 @@
       }
 
       .title {
-        margin-top: 15px;
+        margin: 15px 0;
         text-align: center;
       }
     }

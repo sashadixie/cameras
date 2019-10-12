@@ -2,4 +2,47 @@
 
 .app-container {
   display: flex;
+
+  .full-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    iframe {
+      height: 50vh;
+      width: 100%;
+
+      #flussonic-player {
+        background: white;
+      }
+    }
+  }
+
+  .thumbs {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+
+    .thumb {
+      width: 300px;
+      cursor: pointer;
+      height: auto;
+      margin: 20px;
+      border-radius: 2px;
+      padding: 8px;
+      margin-bottom: 8px;
+      transition: background-color .2s ease;
+
+      @include gmd-1;
+
+      video {
+        width: 100%;
+      }
+
+      .title {
+        margin-top: 15px;
+        text-align: center;
+      }
+    }
+  }
 }

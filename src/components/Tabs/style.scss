@@ -1,0 +1,44 @@
+@import "../shared/globals";
+
+.tabs-container {
+  display: flex;
+  margin: 15px 0;
+  justify-content: center;
+
+  .tab {
+    background: none;
+    border: none;
+    padding: 10px 15px;
+    outline: none;
+    cursor: pointer;
+    position: relative;
+    color: $color-gray-600;
+
+    &:after {
+      content: '';
+      transition: 0.15s all;
+      transform: scale(0);
+      width: 100%;
+      position: absolute;
+      background: $color-light-blue-900;
+      height: 1px;
+      bottom: 0;
+      left: 0;
+    }
+
+    &.active,
+    &:active {
+      color: $color-gray-900;
+
+      &:after {
+        transform: scale(1) !important;
+      }
+    }
+
+    &:hover {
+      &:after {
+        transform: scale(0.5);
+      }
+    }
+  }
+}

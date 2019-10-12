@@ -9,6 +9,22 @@ class App extends Component {
     this.state = props.data;
   }
 
+  componentDidMount() {
+    fetch('http://localhost:8000', {
+      // mode: 'no-cors',
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+      },
+    }).then((response) => {
+      if (response.ok) {
+        response.json().then((json) => {
+          console.log(json); // eslint-disable-line
+        });
+      }
+    });
+  }
+
   render() {
     return (
       <div>

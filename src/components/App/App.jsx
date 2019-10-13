@@ -18,7 +18,7 @@ class App extends Component {
 
   componentDidMount() {
     this.getThumbs(true);
-    // this.countdown = setInterval(this.getThumbs, 10000);
+    this.countdown = setInterval(this.getThumbs, 10000);
   }
 
   componentWillUnmount() {

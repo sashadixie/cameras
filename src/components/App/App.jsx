@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Modal from 'react-modal';
+import classnames from 'classnames';
 import './style.scss';
 import Header from '../Header/Header';
 import Tabs from '../Tabs/Tabs';
@@ -17,7 +18,7 @@ class App extends Component {
 
   componentDidMount() {
     this.getThumbs(true);
-    this.countdown = setInterval(this.getThumbs, 10000);
+    // this.countdown = setInterval(this.getThumbs, 10000);
   }
 
   componentWillUnmount() {
@@ -34,14 +35,10 @@ class App extends Component {
     }).then((response) => {
       if (response.ok) {
         response.json().then((json) => {
-          const items = json;
-          const groupedItems = items.reduce((rv, x) => {
-            (rv[x.folder_parent_name] = rv[x.folder_parent_name] || []).push(x); // eslint-disable-line
-            return rv;
-          }, {});
+          const items = Object.values(json);
           const { activeTab } = this.state;
           this.setState({
-            items: groupedItems,
+            items,
             activeTab: isInitial ? 0 : activeTab,
           });
         });
@@ -71,6 +68,49 @@ class App extends Component {
 
   privacyAlert = () => {
     alert('this is private'); // eslint-disable-line
+  }
+
+  renderGroup = (child) => {
+    const thumbClass = classnames('thumbs', { row: !child.cams });
+    return (
+      <div>
+        <div className="group-title">{child.title}</div>
+        <div className={thumbClass}>
+          {child.cams && child.cams.map(({
+            thumb, title, player, isPrivate = false,
+          }, idx) => {
+            const onClickFunction = isPrivate ? this.privacyAlert : this.openFull;
+            return (
+              <div className="thumb" key={idx} onClick={() => onClickFunction(player)} role="button" tabIndex="-1">  {/* eslint-disable-line */}
+                {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
+                <video src={thumb} alt={idx} />
+                <div className="title">{title}</div>
+              </div>
+            );
+          })}
+          {!child.cams && child.children && Object.values(child.children).map((c) => (
+            <div>
+              <div className="group-title withMargin">{c.title}</div>
+              <div className="thumbs">
+                {c.cams && c.cams.map(({
+                  thumb, title, player, isPrivate = false,
+                }, idx) => {
+                  const onClickFunction = isPrivate
+                    ? this.privacyAlert : this.openFull;
+                  return (
+                    <div className="thumb" key={idx} onClick={() => onClickFunction(player)} role="button" tabIndex="-1">  {/* eslint-disable-line */}
+                      {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
+                      <video src={thumb} alt={idx} />
+                      <div className="title">{title}</div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
   }
 
   render() {
@@ -107,21 +147,10 @@ class App extends Component {
             </Modal>
             <Header />
             <main className="wrapper">
-              <Tabs tabs={Object.keys(items)} activeTab={activeTab} select={this.select} />
-              <div className="thumbs">
-                {/* eslint-disable-next-line */}
-                {Object.values(items)[activeTab].map(({ thumb, title, player, isPrivate = false }, idx) => {
-                  const onClickFunction = isPrivate ? this.privacyAlert : this.openFull;
-                  return (
-                  <div className="thumb" key={idx} onClick={() => onClickFunction(player)} role="button" tabIndex="-1">  {/* eslint-disable-line */}
-                    {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
-                    <video src={thumb} alt={idx} />
-                    <div className="title">{title}</div>
-                  </div>
-                  );
-                })}
+              <Tabs tabs={items.map((i) => i.title)} activeTab={activeTab} select={this.select} />
+              <div className="container">
+                {Object.values(items[activeTab].children).map((child) => this.renderGroup(child))}
               </div>
-
             </main>
           </div>
         </div>

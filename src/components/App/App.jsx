@@ -5,6 +5,7 @@ import classnames from 'classnames';
 import './style.scss';
 import Header from '../Header/Header';
 import Tabs from '../Tabs/Tabs';
+import helpers from '../shared/helpers';
 
 class App extends Component {
   constructor(props) {
@@ -18,7 +19,7 @@ class App extends Component {
 
   componentDidMount() {
     this.getThumbs(true);
-    this.countdown = setInterval(this.getThumbs, 10000);
+    // this.countdown = setInterval(this.getThumbs, 10000);
   }
 
   componentWillUnmount() {
@@ -73,7 +74,7 @@ class App extends Component {
   renderGroup = (child) => {
     const thumbClass = classnames('thumbs', { row: !child.cams });
     return (
-      <div>
+      <div key={child.title}>
         <div className="group-title">{child.title}</div>
         <div className={thumbClass}>
           {child.cams && child.cams.map(({
@@ -89,7 +90,7 @@ class App extends Component {
             );
           })}
           {!child.cams && child.children && Object.values(child.children).map((c) => (
-            <div>
+            <div key={c.title}>
               <div className="group-title withMargin">{c.title}</div>
               <div className="thumbs">
                 {c.cams && c.cams.map(({
@@ -113,42 +114,63 @@ class App extends Component {
     );
   }
 
+  getMobileView = (os) => {
+    const links = {
+      iOS: {
+        image: '/images/appstore.png',
+        link: 'https://apps.apple.com/ru/app/flussonic-watcher/id1233594294',
+      },
+      Android: {
+        image: '/images/android.png',
+        link: 'https://play.google.com/store/apps/details?id=com.flussonic.watcher',
+      },
+    };
+    return (
+      <a className="download" href={links[os].link}>
+        <img alt={os} src={links[os].image} />
+      </a>
+    );
+  }
+
   render() {
     const {
       items, activeTab, fullImage, showModal,
     } = this.state;
+    const os = helpers.getMobileOperatingSystem();
+    const isMobile = ['Android', 'iOS'].includes(os);
     return items !== null ? (
       <div>
-        <div className="app-container">
-          <div className="content">
-            <Modal
-              isOpen={showModal}
-              onRequestClose={this.handleCloseModal}
-              contentLabel="Видео с камеры"
-              style={{
-                overlay: {
-                  backgroundColor: '#000000ba',
-                  zIndex: 9,
-                },
-                content: {
-                  padding: '0',
-                  overflow: 'hidden',
-                },
-              }}
-            >
-              {/* eslint-disable-next-line */}
+        <Modal
+          isOpen={showModal}
+          onRequestClose={this.handleCloseModal}
+          contentLabel="Видео с камеры"
+          style={{
+            overlay: {
+              backgroundColor: '#000000ba',
+              zIndex: 9,
+            },
+            content: {
+              padding: '0',
+              overflow: 'hidden',
+            },
+          }}
+        >
+          {/* eslint-disable-next-line */}
               <img
                 onClick={this.handleCloseModal}
                 className="close"
                 src="/images/clear.svg"
                 alt="закрыть"
               />
-              {fullImage && <iframe title="full" src={fullImage} />}
-            </Modal>
+          {fullImage && <iframe title="full" src={fullImage} />}
+        </Modal>
+        <div className="app-container">
+          <div className="content">
             <Header />
-            <main className="wrapper">
+            <main className="wrapper container">
+              {isMobile ? this.getMobileView(os) : null}
               <Tabs tabs={items.map((i) => i.title)} activeTab={activeTab} select={this.select} />
-              <div className="container">
+              <div>
                 {Object.values(items[activeTab].children).map((child) => this.renderGroup(child))}
               </div>
             </main>

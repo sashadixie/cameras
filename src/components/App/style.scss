@@ -17,6 +17,12 @@ iframe {
   filter: invert(100);
   cursor: pointer;
 }
+.download {
+  img {
+    max-width: 100%;
+    margin: 20px 0;
+  }
+}
 
 .app-container {
   display: flex;
@@ -56,6 +62,10 @@ iframe {
       transition: background-color .2s ease;
 
       @include gmd-1;
+
+      @media (max-width: 480px) {
+        margin-right: 0;
+      }
 
       video {
         width: 100%;

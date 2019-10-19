@@ -16,7 +16,13 @@ iframe {
   width: 50px;
   filter: invert(100);
   cursor: pointer;
+  
+  &.privacy {
+    filter: none;
+    width: 30px;
+  }
 }
+
 .download {
   img {
     max-width: 100%;
@@ -59,7 +65,7 @@ iframe {
       border-radius: 2px;
       min-height: 250px;
       margin-bottom: 8px;
-      transition: background-color .2s ease;
+      transition: background-color 0.2s ease;
 
       @include gmd-1;
 
@@ -74,6 +80,64 @@ iframe {
       .title {
         margin: 15px 0;
         text-align: center;
+      }
+    }
+  }
+}
+
+.privacy-modal {
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+
+  .captcha {
+    margin-bottom: 20px;
+  }
+
+  .checkbox-container {
+    display: flex;
+    margin-bottom: 20px;
+    margin-left: 10px;
+  }
+
+  .qr-links {
+    display: flex;
+
+    .qr-item {
+      margin-left: 20px;
+      color: inherit !important;
+      text-decoration: none !important;
+
+      img {
+        height: 145px;
+        width: auto;
+      }
+    }
+  }
+
+  .guide-list {
+    li {
+      margin-bottom: 10px;
+    }
+  }
+
+  .guide {
+    margin-bottom: 20px;
+  }
+
+  .sendRequest {
+    z-index: 9;
+    font-size: 16px;
+  }
+
+  .settings {
+    p {
+      margin: 5px 0;
+      font-size: 14px;
+
+      .setting-name {
+        font-weight: bold;
+        margin-right: 5px;
       }
     }
   }

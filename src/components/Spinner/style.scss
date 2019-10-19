@@ -1,0 +1,158 @@
+@import "../shared/globals";
+$size-spinnner: 100px;
+$size-border-spinnner: 13px;
+$time_loop: 2s;
+
+.spinner-css{
+  position: absolute;
+  margin: -$size-spinnner / 2  0 0 -$size-spinnner / 2;
+  height: $size-spinnner;
+  width: $size-spinnner;
+  top: 50%;
+  left: 50%;
+  position: absolute;
+  border-radius: 50%;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  
+  &:after{
+    content: "";
+    position: absolute;
+    width: $size-spinnner - $size-border-spinnner;
+    height: $size-spinnner - $size-border-spinnner;
+    left: 0px;
+    top: 0px;
+    margin: $size-border-spinnner / 2;
+    background: $color-white;
+    opacity: 1;
+    border-radius: 999px;
+    -webkit-border-radius: 999px;
+    -moz-border-radius: 999px;
+  }
+  .side{
+    height: $size-spinnner;
+    width: $size-spinnner / 2;
+    position: absolute;
+    overflow: hidden;
+    top: 0;
+    
+    > .fill{
+      position: absolute;
+      width: $size-spinnner / 2;
+      height: $size-spinnner;
+      background: $color-light-blue-900;
+      border-radius: 999px;
+      -webkit-border-radius: 999px;
+      -moz-border-radius: 999px;
+      animation: cssSpinnerRight $time_loop infinite linear;
+      -webkit-animation: cssSpinnerRight $time_loop infinite linear;
+      -moz-animation: cssSpinnerRight $time_loop infinite linear;
+      -o-animation: cssSpinnerRight $time_loop infinite linear;
+    }
+    &.sp_right{
+      left: $size-spinnner / 2 ;
+      border-radius: 0px 999px 999px 0px;
+      -webkit-border-radius: 0px 999px 999px 0px;
+      -moz-border-radius: 0px 999px 999px 0px;
+      
+      > .fill{
+        right: 0;
+        border-right: $size-spinnner / 2 solid $color-white;
+      }
+    }
+    &.sp_left{
+      left: 0;
+      border-radius: 999px 0px 0px 999px;
+      -webkit-border-radius:999px 0px 0px 999px;
+      -moz-border-radius: 999px 0px 0px 999px;
+      
+      > .fill{
+        left: 0;
+        border-left: $size-spinnner / 2 solid $color-white;
+        animation: cssSpinnerLeft $time_loop infinite linear;
+        -webkit-animation: cssSpinnerLeft $time_loop infinite linear;
+        -moz-animation: cssSpinnerLeft $time_loop infinite linear;
+        -o-animation: cssSpinnerLeft $time_loop infinite linear;
+      }
+    }
+  }
+}
+@-webkit-keyframes cssSpinnerRight{
+  0% {-webkit-transform:rotate(0deg)}
+  20% {-webkit-transform:rotate(90deg)}
+  25% {-webkit-transform:rotate(180deg)}
+  50% {-webkit-transform:rotate(180deg)}
+  70% {-webkit-transform:rotate(270deg)}
+  75% {-webkit-transform:rotate(360deg)}
+  100% {-webkit-transform:rotate(360deg)}
+}
+
+@-webkit-keyframes cssSpinnerLeft{
+  0% {-webkit-transform:rotate(0deg)}
+  25% {-webkit-transform:rotate(0deg)}
+  35% {-webkit-transform:rotate(90deg)}
+  50% {-webkit-transform:rotate(180deg)}
+  75% {-webkit-transform:rotate(180deg)}
+  80% {-webkit-transform:rotate(270deg)}
+  100% {-webkit-transform:rotate(360deg)}
+}
+
+@-moz-keyframes cssSpinnerRight{
+  0% {-moz-transform:rotate(0deg)}
+  20% {-moz-transform:rotate(90deg)}
+  25% {-moz-transform:rotate(180deg)}
+  50% {-moz-transform:rotate(180deg)}
+  70% {-moz-transform:rotate(270deg)}
+  75% {-moz-transform:rotate(360deg)}
+  100% {-moz-transform:rotate(360deg)}
+}
+
+@-moz-keyframes cssSpinnerLeft{
+  0% {-moz-transform:rotate(0deg)}
+  25% {-moz-transform:rotate(0deg)}
+  35% {-moz-transform:rotate(90deg)}
+  50% {-moz-transform:rotate(180deg)}
+  75% {-moz-transform:rotate(180deg)}
+  80% {-moz-transform:rotate(270deg)}
+  100% {-moz-transform:rotate(360deg)}
+}
+
+@-o-keyframes cssSpinnerRight{
+	0% {-o-transform:rotate(0deg)}
+  	20% {-o-transform:rotate(90deg)}
+	25% {-o-transform:rotate(180deg)}
+	50% {-o-transform:rotate(180deg)}
+  	70% {-o-transform:rotate(270deg)}
+	75% {-o-transform:rotate(360deg)}
+	100% {-o-transform:rotate(360deg)}
+}
+
+@-o-keyframes cssSpinnerLeft{
+  0% {-o-transform:rotate(0deg)}
+  25% {-o-transform:rotate(0deg)}
+  35% {-o-transform:rotate(90deg)}
+  50% {-o-transform:rotate(180deg)}
+  75% {-o-transform:rotate(180deg)}
+  80% {-o-transform:rotate(270deg)}
+  100% {-o-transform:rotate(360deg)}
+}
+
+@keyframes cssSpinnerRight{
+  0% {transform:rotate(0deg)}
+  20% {transform:rotate(90deg)}
+  25% {transform:rotate(180deg)}
+  50% {transform:rotate(180deg)}
+  70% {transform:rotate(270deg)}
+  75% {transform:rotate(360deg)}
+  100% {transform:rotate(360deg)}
+}
+
+@keyframes cssSpinnerLeft{
+  0% {transform:rotate(0deg)}
+  25% {transform:rotate(0deg)}
+  35% {transform:rotate(90deg)}
+  50% {transform:rotate(180deg)}
+  75% {transform:rotate(180deg)}
+  80% {transform:rotate(270deg)}
+  100% {transform:rotate(360deg)}
+}
